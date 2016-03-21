@@ -31,7 +31,7 @@ int scaledImageWidth, scaledImageHeight = 0;
 final int FRAMERATE = 1;
 final int IMAGESECS = 25;
 final int EVENTSECS = 15;
-final int NUMIMAGES = 100;
+final int NUMIMAGES = 65;
 final int FUTURE_CUTOFF = 42; // 6 weeks
 
 void setup()
@@ -103,13 +103,16 @@ String nextEvent()
     loadCalendar();
   }
   if (myarray == null) return "";
+  int searchesLeft = myarray.length;
   do
   {
+    searchesLeft--;
     index = (index + 1)%myarray.length;
     e = (ICalEvent)myarray[index];
   } 
   // keep searching if event is past or after future date (42 days)
-  while (e.getStart().before(today.getTime()) || e.getStart().after(future.getTime()));
+  while (e.getStart().before(today.getTime()) || e.getStart().after(future.getTime()) || searchesLeft < 0);
+  if (searchesLeft < 0) return ""; // no results found
   String dateTime = df.format(e.getStart());
   Calendar eventHour = Calendar.getInstance();
   eventHour.setTime(e.getStart());
