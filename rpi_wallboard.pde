@@ -8,10 +8,10 @@ Set events;
 Object[] myarray;
 
 String comingEvent = "";
-final String calendarLink = "https://calendar.google.com/calendar/ical/jwmatthys%40gmail.com/private-f095d7360f89e1c513df6ee1ac2a9e9f/basic.ics";
+final String calendarLink = "https://calendar.google.com/calendar/ical/339ff54rb1ao3r68l3b0h82nm8%40group.calendar.google.com/public/basic.ics";
 final String imageRemoteAddress = "https://dl.dropboxusercontent.com/u/29735444/";
-SimpleDateFormat df = new SimpleDateFormat("EEEEE, MMMMM dd\nh:mm a");
-SimpleDateFormat dateOnly = new SimpleDateFormat("EEEE, MMMMM dd\n");
+SimpleDateFormat df = new SimpleDateFormat("EEEEE, MMMMM d\nh:mm a");
+SimpleDateFormat dateOnly = new SimpleDateFormat("EEEE, MMMMM d\n");
 Calendar today, future;
 int currentDay = -1;
 int index = 0;
