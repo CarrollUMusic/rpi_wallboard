@@ -13,7 +13,7 @@ public class ICal {
     public void parse( InputStream in ) {
         try {
             CalendarBuilder cb = new CalendarBuilder();
-            Calendar cal = cb.build( in );
+            net.fortuna.ical4j.model.Calendar cal = cb.build( in );
             parseEvents( cal );
         } catch ( java.io.IOException ioe ) {
             throw new ICalException( "error while loading ics file", ioe );
@@ -27,7 +27,7 @@ public class ICal {
      */
     public void parse( String calendar ) {
         try {
-            Calendar cal = Calendars.load( calendar );
+            net.fortuna.ical4j.model.Calendar cal = Calendars.load( calendar );
             parseEvents( cal );
         } catch ( java.io.IOException ioe ) {
             throw new ICalException( "error while loading ics file", ioe );
@@ -36,12 +36,13 @@ public class ICal {
         }
     }
 
-    private void parseEvents( Calendar cal ) {
+    private void parseEvents( net.fortuna.ical4j.model.Calendar cal ) {
         for (Iterator i = cal.getComponents("VEVENT").iterator(); i.hasNext();) {
             VEvent component = (VEvent) i.next();
             ICalEvent e = new ICalEvent( component.getSummary().getValue(), 
                     component.getStartDate().getDate(), 
-                    component.getEndDate(true).getDate());
+                    component.getEndDate(true).getDate(),
+                    component.getLocation().getValue());
             events.add(e);                
         }
     }

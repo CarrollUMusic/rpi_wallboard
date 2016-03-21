@@ -7,6 +7,7 @@ public class ICalEvent implements Comparable {
     private Date start;
     private Date end;
     private String summary;
+    private String location;
 
     /**
      * Empty contstuctor;
@@ -17,10 +18,11 @@ public class ICalEvent implements Comparable {
     /**
      * full contstructor
      */ 
-    public ICalEvent( String summary, Date start, Date end ) {
+    public ICalEvent( String summary, Date start, Date end, String location ) {
         this.summary = summary;
         this.start = start;
         this.end = end;
+        this.location = location;
     }
 
     public String getSummary() {
@@ -29,6 +31,14 @@ public class ICalEvent implements Comparable {
 
     public void setSummary( String summary ) {
         this.summary = summary;
+    }
+
+    public String getLocation() {
+        return this.location;
+    }
+
+    public void setLocation( String location ) {
+        this.location = location;
     }
 
     public Date getStart() {
