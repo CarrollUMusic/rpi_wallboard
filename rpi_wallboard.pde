@@ -116,7 +116,7 @@ String nextEvent()
   {
     dateTime = dateOnly.format(e.getStart());
   }
-  return e.getSummary()+"\n"+dateTime+"\n"+e.getLocation();
+  return e.getSummary()+"\n"+e.getLocation()+"\n"+dateTime;
 }
 
 void nextImage()
