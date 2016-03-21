@@ -39,6 +39,7 @@ void setup()
   size(displayWidth, displayHeight);
   screenRatio = displayWidth*1.0/displayHeight;
   smooth();
+  noCursor();
   font = createFont("Lora-Regular.ttf", 60, true);
   carrollFont = createFont("Lora-Regular.ttf", 96, true);
   imageMode(CENTER);
