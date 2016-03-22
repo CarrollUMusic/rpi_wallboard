@@ -25,7 +25,7 @@ final String yourMessage = "Music at Carroll";
 
 FileTransferClient ftp;
 Set events;
-Object[] myarray;
+Iterator iterator;
 
 String comingEvent = "";
 SimpleDateFormat df = new SimpleDateFormat("EEEEE, MMMMM d\nh:mm a");
@@ -104,25 +104,24 @@ void draw()
 String nextEvent()
 {
   ICalEvent e;
-  try
-  {
-    e = (ICalEvent)myarray[index];
-  } 
-  catch (Exception err)
-  {
-    loadCalendar();
+  int countOut = events.size();
+  do {
+    countOut--;
+    if (countOut <0) return "";
+    try
+    {
+      e = (ICalEvent)iterator.next();
+    } 
+    catch (Exception err)
+    {
+      println(err);
+      loadCalendar();
+      return "";
+    }
   }
-  if (myarray == null) return "";
-  int searchesLeft = myarray.length;
-  do
-  {
-    searchesLeft--;
-    index = (index + 1)%myarray.length;
-    e = (ICalEvent)myarray[index];
-  } 
   // keep searching if event is past or after future date (42 days)
-  while (e.getStart().before(today.getTime()) || e.getStart().after(future.getTime()) || searchesLeft < 0);
-  if (searchesLeft < 0) return ""; // no results found
+  while (e.getStart().before(today.getTime()) ||
+    e.getStart().after(future.getTime()));
   String dateTime = df.format(e.getStart());
   Calendar eventHour = Calendar.getInstance();
   eventHour.setTime(e.getStart());
@@ -159,13 +158,12 @@ void loadCalendar()
   try
   {
     ical.parse(createInput(calendarLink));
+    events = ical.getEvents();
+    iterator = events.iterator();
   }
   catch (Exception err) {
     println(err);
   }
-  events = ical.getEvents();
-  myarray = events.toArray();
-  comingEvent = nextEvent();
 }
 
 void connectToFTP()
