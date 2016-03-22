@@ -13,19 +13,21 @@ import java.net.URL;
 
 // USER EDITED INFO - change these
 final String host = "pioneer.carrollu.edu"; // your FTP server
-final String username = "xxxxxxxx";
-final String password = "xxxxxxxx"; // warning: this is so not secure. hmm, alternative?
+final String username = "xxxxxxx";
+final String password = "xxxxxxx"; // warning: this is so not secure. hmm, alternative?
 final String remotePath = "faculty/jmatthys1/slideshow"; // path to slideshow folder
+// address to your Google Calendar ICal (found in Calendar Settings online)
+final String calendarLink = "https://calendar.google.com/calendar/ical/339ff54rb1ao3r68l3b0h82nm8%40group.calendar.google.com/public/basic.ics";
 final int IMAGESECS = 25; // number of seconds each image appears
 final int EVENTSECS = 15; // number of seconds each event appears
 final int FUTURE_CUTOFF = 42; // how far into the future to look for events (in days)
+final String yourMessage = "Music at Carroll";
 
 FileTransferClient ftp;
 Set events;
 Object[] myarray;
 
 String comingEvent = "";
-final String calendarLink = "https://calendar.google.com/calendar/ical/339ff54rb1ao3r68l3b0h82nm8%40group.calendar.google.com/public/basic.ics";
 SimpleDateFormat df = new SimpleDateFormat("EEEEE, MMMMM d\nh:mm a");
 SimpleDateFormat dateOnly = new SimpleDateFormat("EEEE, MMMMM d\n");
 Calendar today, future;
@@ -74,8 +76,8 @@ void draw()
   }
   if (events==null) loadCalendar();
   background(0);
-  if (image!=null)
-    image(image, width/2, height/2, scaledImageWidth, scaledImageHeight);
+  if (image==null) nextImage();
+  else image(image, width/2, height/2, scaledImageWidth, scaledImageHeight);
   fill(0, 160);
   stroke(0);
   rect(0, height-200, 820, height);
@@ -84,7 +86,7 @@ void draw()
   fill(0);
   textAlign(LEFT);
   textFont(carrollFont);
-  text("Music at Carroll", 48, height-80);
+  text(yourMessage, 48, height-80);
   textAlign(RIGHT);
   textFont(font);
   text("UPCOMING EVENTS", width-50, 80);
@@ -92,7 +94,7 @@ void draw()
   fill(255);
   textAlign(LEFT);
   textFont(carrollFont);
-  text("Music at Carroll", 50, height-78);
+  text(yourMessage, 50, height-78);
   textFont(font);
   textAlign(RIGHT);
   text("UPCOMING EVENTS", width-48, 82);
