@@ -11,12 +11,21 @@ import java.util.Calendar;
 import java.util.TreeSet;
 import java.net.URL;
 
+// USER EDITED INFO - change these
+final String host = "pioneer.carrollu.edu"; // your FTP server
+final String username = "xxxxxxxx";
+final String password = "xxxxxxxx"; // warning: this is so not secure. hmm, alternative?
+final String remotePath = "faculty/jmatthys1/slideshow"; // path to slideshow folder
+final int IMAGESECS = 25; // number of seconds each image appears
+final int EVENTSECS = 15; // number of seconds each event appears
+final int FUTURE_CUTOFF = 42; // how far into the future to look for events (in days)
+
+FileTransferClient ftp;
 Set events;
 Object[] myarray;
 
 String comingEvent = "";
 final String calendarLink = "https://calendar.google.com/calendar/ical/339ff54rb1ao3r68l3b0h82nm8%40group.calendar.google.com/public/basic.ics";
-final String imageRemoteAddress = "https://dl.dropboxusercontent.com/u/29735444/";
 SimpleDateFormat df = new SimpleDateFormat("EEEEE, MMMMM d\nh:mm a");
 SimpleDateFormat dateOnly = new SimpleDateFormat("EEEE, MMMMM d\n");
 Calendar today, future;
@@ -28,14 +37,12 @@ PFont font, carrollFont;
 float screenRatio;
 float imageX, imageY = 0;
 int scaledImageWidth, scaledImageHeight = 0;
+String[] imageList;
 final int FRAMERATE = 1;
-final int IMAGESECS = 25;
-final int EVENTSECS = 15;
-final int NUMIMAGES = 65;
-final int FUTURE_CUTOFF = 42; // 6 weeks
 
 void setup()
 {
+  connectToFTP();
   size(displayWidth, displayHeight);
   screenRatio = displayWidth*1.0/displayHeight;
   smooth();
@@ -67,7 +74,8 @@ void draw()
   }
   if (events==null) loadCalendar();
   background(0);
-  image(image, width/2, height/2, scaledImageWidth, scaledImageHeight);
+  if (image!=null)
+    image(image, width/2, height/2, scaledImageWidth, scaledImageHeight);
   fill(0, 160);
   stroke(0);
   rect(0, height-200, 820, height);
@@ -125,22 +133,21 @@ String nextEvent()
 
 void nextImage()
 {
-  do
-  {
-    imageindex = int(random(NUMIMAGES));
-    String fn = imageRemoteAddress+ nf(imageindex, 3)+".jpg";
-    image = loadImage(fn);
+  try {
+    ftp.downloadFile("/tmp/tmpimage.jpg", imageList[int(random(imageList.length))]);
+    image = loadImage("/tmp/tmpimage.jpg");
+    float imageRatio = image.width*1.0/image.height;
+    if (imageRatio >= screenRatio)
+    {
+      scaledImageWidth = width;
+      scaledImageHeight = int(scaledImageWidth / imageRatio);
+    } else
+    {
+      scaledImageHeight = height;
+      scaledImageWidth = int(scaledImageHeight * imageRatio);
+    }
   } 
-  while (image==null);
-  float imageRatio = image.width*1.0/image.height;
-  if (imageRatio >= screenRatio)
-  {
-    scaledImageWidth = width;
-    scaledImageHeight = int(scaledImageWidth / imageRatio);
-  } else
-  {
-    scaledImageHeight = height;
-    scaledImageWidth = int(scaledImageHeight * imageRatio);
+  catch (Exception e) {
   }
 }
 
@@ -157,6 +164,30 @@ void loadCalendar()
   events = ical.getEvents();
   myarray = events.toArray();
   comingEvent = nextEvent();
+}
+
+void connectToFTP()
+{
+  try {
+    ftp = new FileTransferClient();
+    ftp.setRemoteHost(host);
+    ftp.setUserName(username);
+    ftp.setPassword(password);
+    ftp.connect();
+    ftp.changeDirectory(remotePath);
+    ftp.getAdvancedFTPSettings().setConnectMode(FTPConnectMode.PASV);
+    String[] files = ftp.directoryNameList(".", true);
+    imageList = new String[files.length];
+    for (int i = 0; i < files.length; i++)
+    {
+      String[] dirInfo = split(files[i], ' ');
+      imageList[i] = dirInfo[dirInfo.length-1];
+    }
+  } 
+  catch (Exception e)
+  {
+    println (e);
+  }
 }
 
 void keyPressed()
