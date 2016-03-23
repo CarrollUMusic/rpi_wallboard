@@ -13,8 +13,8 @@ import java.net.URL;
 
 // USER EDITED INFO - change these
 final String host = "pioneer.carrollu.edu"; // your FTP server
-final String username = "xxxxxxx";
-final String password = "xxxxxxx"; // warning: this is so not secure. hmm, alternative?
+final String username = "jmatthys";
+final String password = "Gdz8tth."; // warning: this is so not secure. hmm, alternative?
 final String remotePath = "faculty/jmatthys1/slideshow"; // path to slideshow folder
 // address to your Google Calendar ICal (found in Calendar Settings online)
 final String calendarLink = "https://calendar.google.com/calendar/ical/339ff54rb1ao3r68l3b0h82nm8%40group.calendar.google.com/public/basic.ics";

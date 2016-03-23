@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Wallboard
+Exec=/home/pi/sketchbook/rpi_wallboard/application.linux-armv6hf/rpi_wallboard
+Icon=/home/pi/sketchbook/rpi_wallboard/data/presentation.png
+Terminal=false
+StartupNotify=true
